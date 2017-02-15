@@ -29,6 +29,8 @@ public interface FacadeService
 
   void deleteApp( Integer id );
 
+  User getUserByName( String name );
+
   // TODO : test method. remove
   void getUsers();
 }

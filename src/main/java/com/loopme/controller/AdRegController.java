@@ -1,28 +1,23 @@
 package com.loopme.controller;
 
-import com.loopme.dao.AppDao;
-import com.loopme.dao.UserDao;
 import com.loopme.domain.AppType;
 import com.loopme.domain.ContentType;
 import com.loopme.domain.User;
-import com.loopme.domain.UserRole;
 import com.loopme.service.FacadeService;
 import com.loopme.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
+@RequestMapping("/data")
 public class AdRegController
 {
   @Autowired
@@ -35,6 +30,13 @@ public class AdRegController
   }
 
 // TODO : login point, add current user to Session after successful login
+  @RequestMapping( value = "/login", method = { RequestMethod.GET } )
+  public void createPublisher( HttpSession session,
+                               @RequestParam( value = "name", required = true ) String name)
+  {
+    User user = service.getUserByName(name);
+    Utils.setUserToSession(session, user);
+  }
 
 // создать паблишера
   @RequestMapping( value = "/create/publisher", method = { RequestMethod.POST, RequestMethod.GET } )
@@ -98,9 +100,7 @@ public class AdRegController
                          @RequestParam( value = "type", required = true ) AppType type,
                          @RequestParam( value = "contentType", required = true ) List<ContentType> contentTypes )
   {
-    // TODO : get user from session!
-
-    service.createApp( name, new User(), type, contentTypes );
+    service.createApp( name, Utils.getUserFromSession(session), type, contentTypes );
   }
 
 // обновить приложение

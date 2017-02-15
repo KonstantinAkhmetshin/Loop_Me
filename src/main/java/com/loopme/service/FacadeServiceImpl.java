@@ -91,6 +91,16 @@ public class FacadeServiceImpl implements FacadeService
     appDao.delete(id);
   }
 
+  @Override
+  public User getUserByName(String name) {
+    List<User> userList = userDao.getUserByName(name);
+    if( userList.isEmpty() )
+    {
+      throw new UserNotFoundException( "Cannot update user. User with name : " + name + " not found" );
+    }
+    return userList.get(0);
+  }
+
   // TODO : test method. remove
   @Override
   public void getUsers()
@@ -107,7 +117,7 @@ public class FacadeServiceImpl implements FacadeService
 
   private User createUser( String name, String email, UserRole userRole )
   {
-      Utils.validateEmail( email );
+    Utils.validateEmail( email );
     User publisherUser = new User().setName( name ).setEmail( email ).setUserRole( userRole );
     return userDao.save( publisherUser );
   }

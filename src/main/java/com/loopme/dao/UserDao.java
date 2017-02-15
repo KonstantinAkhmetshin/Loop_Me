@@ -10,4 +10,5 @@ import java.util.List;
 public interface  UserDao extends CrudRepository<User,Integer>
 {
   List<User> getUserById( Integer id );
+  List<User> getUserByName( String name );
 }

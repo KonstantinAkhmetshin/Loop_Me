@@ -73,13 +73,13 @@ public class FacadeServiceImpl implements FacadeService
   @Override
   public App editApp( Integer id, String name, User user, AppType type, List<ContentType> contentTypes )
   {
-    List<App> appList = appDao.getAppById(id);
-    if( appList.isEmpty() )
+    App app = appDao.getAppById(id);
+    if( app == null )
     {
       // TODO : change exception type
       throw new UserNotFoundException( "Cannot update user. User with id=" + id + " not found" );
     }
-    App app = appList.get(0).setName(name).setUser(user).setType(type).setContentTypes(contentTypes);
+    app.setName(name).setUser(user).setType(type).setContentTypes(contentTypes);
 
     return appDao.save(app);
   }

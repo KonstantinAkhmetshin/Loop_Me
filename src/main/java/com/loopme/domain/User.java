@@ -1,5 +1,7 @@
 package com.loopme.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -30,6 +32,7 @@ public final class User implements Serializable
   @Column( name = "USER_ROLE", nullable = false )
   private UserRole userRole;
 
+  @JsonIgnore
   @Column( name = "PASSWORD", nullable = false )
   private String password;
 

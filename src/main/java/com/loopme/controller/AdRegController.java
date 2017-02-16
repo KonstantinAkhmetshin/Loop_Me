@@ -11,38 +11,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-@RequestMapping("/data")
 public class AdRegController
 {
   @Autowired
   FacadeService service;
 
-//  @RequestMapping( value = "/getUsers", method = { RequestMethod.GET } )
-//  public void getUsers()
-//  {
-//    service.getUsers();
-//  }
-//
-//// TODO : login point, add current user to Session after successful login
-//  @RequestMapping( value = "/login", method = { RequestMethod.GET } )
-//  public void createPublisher( HttpSession session,
-//                               @RequestParam( value = "name", required = true ) String name)
-//  {
-//    User user = service.getUserByName(name);
-//    Utils.setUserToSession(session, user);
-//  }
 
-  // создать паблишера
   @RequestMapping( value = "/publisher/get", method =  RequestMethod.GET  )
-  public List<User> getPublishers( HttpSession session,
-                               @RequestParam( value = "name", required = true ) String name,
-                               @RequestParam( value = "email", required = true ) String email )
+  @ResponseBody
+  public List<User> getPublishers()
   {
     return service.getPublishers();
   }

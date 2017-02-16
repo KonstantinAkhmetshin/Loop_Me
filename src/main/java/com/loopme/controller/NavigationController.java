@@ -26,4 +26,9 @@ public class NavigationController
     model.addAttribute("loginError", true);
     return "login";
   }
+
+  @RequestMapping("/403.html")
+  public String accessDenied() {
+    return "403";
+  }
 }

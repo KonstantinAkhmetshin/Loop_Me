@@ -37,13 +37,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .logoutSuccessUrl("/login.html")
             .and()
                .authorizeRequests()
-               .anyRequest().permitAll()
-               .antMatchers("/index.html", "/publisher/**", "/operator/**").hasRole("ADMIN")
-               .antMatchers("/index.html", "/publisher/**", "/app/**").hasRole("ADOPS")
-               .antMatchers("/index.html", "/app/**").hasRole("PUBLISHER")
+                       .antMatchers("/**").permitAll()
+//               .antMatchers("/login.html").permitAll()
+//               .antMatchers("/publisher/**", "/operator/**").hasRole("ADMIN")
+//               .antMatchers("/publisher/**", "/app/**").hasRole("ADOPS")
+//               .antMatchers("/app/**").hasRole("PUBLISHER")
             .and()
                .exceptionHandling()
-               .accessDeniedPage("/403.html");
+            .accessDeniedPage("/403.html");
 
   }
 

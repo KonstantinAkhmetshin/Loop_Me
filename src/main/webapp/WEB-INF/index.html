@@ -1,4 +1,4 @@
-!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
   <title>LoopMe</title>
@@ -7,32 +7,62 @@
   <link rel="stylesheet" type="text/css"
         href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
 
+  <script type="text/javascript"
+          src="webjars/jquery/2.2.4/jquery.min.js"></script>
+
+  <script type="text/javascript"
+          src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="js/main.js"></script>
 
 </head>
 <body>
-
-<nav class="navbar navbar-default navbar-fixed-top">
+<div>
+<nav class="navbar navbar-default">
   <div class="container">
-    <div class="page-header">Hello, <span sec:authentication="name"/>! Your role is <span sec:authentication="principal.authorities"/> </div>
+    <div class="page-header"><h1>Hello, <span sec:authentication="name"></span>! Your role is <span sec:authentication="principal.authorities"></span> </h1></div>
     <ul class="nav nav-pills">
-      <li sec:authorize="hasAnyAuthority('ADMIN', 'ADOPS')" role="presentation" ><span id="publishers">Publishers</span></li>
-      <li sec:authorize="hasAuthority('ADMIN')" role="presentation"><span id="operators">Operators</span></li>
-      <li sec:authorize="hasAnyAuthority('ADOPS','PUBLISHER')" role="presentation"><span id="apps">Apps</span></li>
+      <li sec:authorize="hasAnyAuthority('ADMIN', 'ADOPS')" role="presentation" ><a id="publishers">Publishers</a></li>
+      <li sec:authorize="hasAuthority('ADMIN')" role="presentation"><a id="operators">Operators</a></li>
+      <li sec:authorize="hasAnyAuthority('ADOPS','PUBLISHER')" role="presentation"><a id="apps">Apps</a></li>
     </ul>
   </div>
 </nav>
+</div>
+<div>
 
-<div class="container">
+  <table id="tab" class="table">
 
-  <div class="starter-template">
-
-  </div>
+  </table>
 
 </div>
-<!-- /.container -->
 
-<script type="text/javascript"
-        src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<div class="navbar-fixed-bottom">
+  <button id="createPublisher" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Register Publisher</button>
+  <button id="createApp" class="btn">Register Application</button>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 </body>
 </html>

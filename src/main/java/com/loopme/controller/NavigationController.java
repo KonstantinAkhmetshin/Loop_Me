@@ -9,19 +9,19 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class NavigationController
 {
-  @RequestMapping("/")
-  public String welcome()
-  {
+
+  @RequestMapping("/index.html")
+  public String index() {
     return "index";
   }
 
-  @RequestMapping("/login")
+  @RequestMapping("/login.html")
   public String login() {
     return "login";
   }
 
 
-  @RequestMapping("/login-error")
+  @RequestMapping("/login-error.html")
   public String loginError(Model model) {
     model.addAttribute("loginError", true);
     return "login";

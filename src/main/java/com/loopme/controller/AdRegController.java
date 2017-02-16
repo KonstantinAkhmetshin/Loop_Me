@@ -23,23 +23,32 @@ public class AdRegController
   @Autowired
   FacadeService service;
 
-  @RequestMapping( value = "/getUsers", method = { RequestMethod.GET } )
-  public void getUsers()
-  {
-    service.getUsers();
-  }
+//  @RequestMapping( value = "/getUsers", method = { RequestMethod.GET } )
+//  public void getUsers()
+//  {
+//    service.getUsers();
+//  }
+//
+//// TODO : login point, add current user to Session after successful login
+//  @RequestMapping( value = "/login", method = { RequestMethod.GET } )
+//  public void createPublisher( HttpSession session,
+//                               @RequestParam( value = "name", required = true ) String name)
+//  {
+//    User user = service.getUserByName(name);
+//    Utils.setUserToSession(session, user);
+//  }
 
-// TODO : login point, add current user to Session after successful login
-  @RequestMapping( value = "/login", method = { RequestMethod.GET } )
-  public void createPublisher( HttpSession session,
-                               @RequestParam( value = "name", required = true ) String name)
+  // создать паблишера
+  @RequestMapping( value = "/publisher/get", method =  RequestMethod.GET  )
+  public List<User> getPublishers( HttpSession session,
+                               @RequestParam( value = "name", required = true ) String name,
+                               @RequestParam( value = "email", required = true ) String email )
   {
-    User user = service.getUserByName(name);
-    Utils.setUserToSession(session, user);
+    return service.getPublishers();
   }
 
 // создать паблишера
-  @RequestMapping( value = "/create/publisher", method = { RequestMethod.POST, RequestMethod.GET } )
+  @RequestMapping( value = "/publisher/create", method = { RequestMethod.POST, RequestMethod.GET } )
   public void createPublisher( HttpSession session,
                                @RequestParam( value = "name", required = true ) String name,
                                @RequestParam( value = "email", required = true ) String email )
@@ -48,44 +57,44 @@ public class AdRegController
   }
 
 // редактировать паблишера
-  @RequestMapping( value = "/edit/publisher", method = RequestMethod.POST )
+  @RequestMapping( value = "/publisher/edit", method = RequestMethod.POST )
   public void editPublisher( HttpSession session,
                              @RequestParam( value = "id", required = true ) Integer id,
                              @RequestParam( value = "name", defaultValue = "" ) String name,
                              @RequestParam( value = "email", defaultValue = "" ) String email )
   {
-    service.editPublisher( id, name, email );
+    service.editPublisher(id, name, email);
   }
 
 // удалить паблишера
-  @RequestMapping( value = "delete/publisher", method = RequestMethod.GET )
+  @RequestMapping( value = "/publisher/delete", method = RequestMethod.GET )
   public void deletePublisher( HttpSession session,
                                @RequestParam( value = "id", required = true ) Integer id )
   {
-    service.deletePublisher( id );
+    service.deletePublisher(id);
   }
 
 // создать Оператора
-  @RequestMapping( value = "/create/operator", method = RequestMethod.POST )
+  @RequestMapping( value = "/operator/create", method = RequestMethod.POST )
   public void createOperator( HttpSession session,
                               @RequestParam( value = "name", required = true ) String name,
                               @RequestParam( value = "email", required = true ) String email )
   {
-    service.createOperator( name, email );
+    service.createOperator(name, email);
   }
 
 // редактировать Оператора
-  @RequestMapping( value = "/edit/operator", method = RequestMethod.POST )
+  @RequestMapping( value = "/operator/edit", method = RequestMethod.POST )
   public void editOperator( HttpSession session,
                             @RequestParam( value = "id", required = true ) Integer id,
                             @RequestParam( value = "name", defaultValue = "" ) String name,
                             @RequestParam( value = "email", defaultValue = "" ) String email )
   {
-    service.editOperator( id, name, email );
+    service.editOperator(id, name, email);
   }
 
 // удалить Оператора
-  @RequestMapping( value = "delete/operator", method = RequestMethod.GET )
+  @RequestMapping( value = "/operator/delete", method = RequestMethod.GET )
   public void deleteOperator( HttpSession session,
                               @RequestParam( value = "id", required = true ) Integer id )
   {
@@ -94,7 +103,7 @@ public class AdRegController
 
 // создать приложение
   // TODO : check inputs
-  @RequestMapping( value = "/create/app", method = { RequestMethod.POST, RequestMethod.GET } )
+  @RequestMapping( value = "/app/create", method = { RequestMethod.POST, RequestMethod.GET } )
   public void createApp( HttpSession session,
                          @RequestParam( value = "name", required = true ) String name,
                          @RequestParam( value = "type", required = true ) AppType type,
@@ -104,7 +113,7 @@ public class AdRegController
   }
 
 // обновить приложение
-  @RequestMapping( value = "/edit/app", method = RequestMethod.POST )
+  @RequestMapping( value = "/app/edit", method = RequestMethod.POST )
   public void editApp( HttpSession session,
                        @RequestParam( value = "id", required = true ) Integer id,
                        @RequestParam( value = "name", defaultValue = "" ) String name,
@@ -115,7 +124,7 @@ public class AdRegController
   }
 
 // удалить приложение
-  @RequestMapping( value = "delete/app", method = RequestMethod.GET )
+  @RequestMapping( value = "/app/delete", method = RequestMethod.GET )
   public void deleteApp( HttpSession session,
                          @RequestParam( value = "id", required = true ) Integer id )
   {

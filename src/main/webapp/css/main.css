@@ -1,0 +1,30 @@
+body {
+  font-family: sans;
+  font-size: 1em;
+}
+
+p.error {
+  font-weight: bold;
+  color: red;
+}
+
+div.logout {
+  float: right;
+}
+
+.parent {
+  position: relative;
+}
+.child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.centred-up{
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 10%;
+}

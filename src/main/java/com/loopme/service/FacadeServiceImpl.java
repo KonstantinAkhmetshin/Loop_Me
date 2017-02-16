@@ -92,13 +92,18 @@ public class FacadeServiceImpl implements FacadeService
   }
 
   @Override
+  public List<User> getPublishers() {
+    return userDao.getUserByUserRole(UserRole.PUBLISHER);
+  }
+
+  @Override
   public User getUserByName(String name) {
-    List<User> userList = userDao.getUserByName(name);
-    if( userList.isEmpty() )
+    User user = userDao.getUserByName(name);
+    if( user == null )
     {
       throw new UserNotFoundException( "Cannot update user. User with name : " + name + " not found" );
     }
-    return userList.get(0);
+    return user;
   }
 
   // TODO : test method. remove
@@ -124,12 +129,11 @@ public class FacadeServiceImpl implements FacadeService
 
   private User updateUser( Integer id, String name, String email )
   {
-    List<User> userList = userDao.getUserById( id );
-    if( userList.isEmpty() )
+    User user = userDao.getUserById( id );
+    if( user == null )
     {
       throw new UserNotFoundException( "Cannot update user. User with id=" + id + " not found" );
     }
-    User user = userList.get( 0 );
     boolean changeFlag = false;
     if( ! ( email.equals( NO_VALUE ) || user.getEmail().equals( email ) ) )
     {

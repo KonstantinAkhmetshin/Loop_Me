@@ -30,6 +30,19 @@ public final class User implements Serializable
   @Column( name = "USER_ROLE", nullable = false )
   private UserRole userRole;
 
+  @Column( name = "PASSWORD", nullable = false )
+  private String password;
+
+
+  public String getPassword() {
+    return password;
+  }
+
+  public User setPassword(String password) {
+    this.password = password;
+    return this;
+  }
+
   public Integer getId()
   {
     return id;

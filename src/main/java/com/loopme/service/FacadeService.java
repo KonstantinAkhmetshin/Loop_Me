@@ -29,6 +29,8 @@ public interface FacadeService
 
   void deleteApp( Integer id );
 
+  List<User> getPublishers();
+
   User getUserByName( String name );
 
   // TODO : test method. remove

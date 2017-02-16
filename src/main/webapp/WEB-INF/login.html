@@ -1,24 +1,30 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <head>
-    <title>LoopMe</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Welcome to LoopMe Ad Service</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}"/>
 
     <link rel="stylesheet" type="text/css"
-          href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+          href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
 
 </head>
 </head>
 <body>
-<h1>Login page</h1>
-<p th:if="${loginError}" class="error">Wrong user or password</p>
-<form th:action="@{/login.html}" method="post">
-    <label for="username">Username</label>:
-    <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
-    <label for="password">Password</label>:
-    <input type="password" id="password" name="password" /> <br />
-    <input type="submit" value="Log in" />
-</form>
+<div class="centred-up">
+    <h2 class="form-heading">Welcome to Ad Service</h2>
+</div>
+
+<div class="child form-group">
+    <p th:if="${loginError}" class="error">Wrong user or password</p>
+
+    <form th:action="@{/login.html}" method="post">
+        <label for="username">Username</label>:
+        <input class="form-control" type="text" id="username" name="username" autofocus="autofocus"/> <br/>
+        <label for="password">Password</label>:
+        <input class="form-control" type="password" id="password" name="password"/> <br/>
+        <input class="btn btn btn-lg btn-primary btn-block" type="submit" value="Log in"/>
+    </form>
+</div>
 </body>
 </html>

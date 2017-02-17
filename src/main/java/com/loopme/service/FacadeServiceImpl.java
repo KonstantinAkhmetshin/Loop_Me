@@ -26,9 +26,9 @@ public class FacadeServiceImpl implements FacadeService
   private AppDao  appDao;
 
   @Override
-  public User createPublisher( String name, String email )
+  public User createPublisher( String name, String email, String password )
   {
-    return createUser( name, email, UserRole.PUBLISHER );
+    return createUser( name, email, UserRole.PUBLISHER, password );
   }
 
   @Override
@@ -44,9 +44,9 @@ public class FacadeServiceImpl implements FacadeService
   }
 
   @Override
-  public User createOperator( String name, String email )
+  public User createOperator( String name, String email, String password )
   {
-    return createUser( name, email, UserRole.ADOPS );
+    return createUser( name, email, UserRole.ADOPS, password );
   }
 
   @Override
@@ -117,13 +117,14 @@ public class FacadeServiceImpl implements FacadeService
   }
 
   private void deleteUser(Integer id){
-    userDao.delete(id);
+    User user = userDao.getUserById(id);
+    userDao.delete(user);
   }
 
-  private User createUser( String name, String email, UserRole userRole )
+  private User createUser( String name, String email, UserRole userRole, String password )
   {
     Utils.validateEmail( email );
-    User publisherUser = new User().setName( name ).setEmail( email ).setUserRole( userRole );
+    User publisherUser = new User().setName( name ).setEmail( email ).setUserRole( userRole ).setPassword(password);
     return userDao.save( publisherUser );
   }
 

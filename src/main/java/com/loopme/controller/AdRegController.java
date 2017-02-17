@@ -6,14 +6,22 @@ import com.loopme.domain.User;
 import com.loopme.service.FacadeService;
 import com.loopme.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -33,17 +41,17 @@ public class AdRegController
 
 // создать паблишера
   @RequestMapping( value = "/publisher/create", method = { RequestMethod.POST, RequestMethod.GET } )
-  public void createPublisher( HttpSession session,
-                               @RequestParam( value = "name", required = true ) String name,
-                               @RequestParam( value = "email", required = true ) String email )
+  public ResponseEntity<?> createPublisher(@RequestParam( value = "name", defaultValue = "" ) String name,
+                                           @RequestParam( value = "email", defaultValue = "" ) String email,
+                                           @RequestParam( value = "password", defaultValue = "" ) String password)
   {
-    service.createPublisher( name, email );
+    service.createPublisher(name, email, password);
+    return new ResponseEntity<>( HttpStatus.OK );
   }
 
 // редактировать паблишера
   @RequestMapping( value = "/publisher/edit", method = RequestMethod.POST )
-  public void editPublisher( HttpSession session,
-                             @RequestParam( value = "id", required = true ) Integer id,
+  public void editPublisher( @RequestParam( value = "id", required = true ) Integer id,
                              @RequestParam( value = "name", defaultValue = "" ) String name,
                              @RequestParam( value = "email", defaultValue = "" ) String email )
   {
@@ -52,19 +60,20 @@ public class AdRegController
 
 // удалить паблишера
   @RequestMapping( value = "/publisher/delete", method = RequestMethod.GET )
-  public void deletePublisher( HttpSession session,
-                               @RequestParam( value = "id", required = true ) Integer id )
+
+  public ResponseEntity<?> deletePublisher(@RequestParam( value = "id", required = true ) Integer id )
   {
     service.deletePublisher(id);
+    return new ResponseEntity<>( HttpStatus.OK );
   }
 
 // создать Оператора
   @RequestMapping( value = "/operator/create", method = RequestMethod.POST )
-  public void createOperator( HttpSession session,
-                              @RequestParam( value = "name", required = true ) String name,
-                              @RequestParam( value = "email", required = true ) String email )
+  public void createOperator( @RequestParam( value = "name", required = true ) String name,
+                              @RequestParam( value = "email", required = true ) String email,
+                              @RequestParam( value = "email", required = true ) String password)
   {
-    service.createOperator(name, email);
+    service.createOperator(name, email, password);
   }
 
 // редактировать Оператора
@@ -82,7 +91,7 @@ public class AdRegController
   public void deleteOperator( HttpSession session,
                               @RequestParam( value = "id", required = true ) Integer id )
   {
-    service.deleteOperator( id );
+    service.deleteOperator(id);
   }
 
 // создать приложение
@@ -93,7 +102,7 @@ public class AdRegController
                          @RequestParam( value = "type", required = true ) AppType type,
                          @RequestParam( value = "contentType", required = true ) List<ContentType> contentTypes )
   {
-    service.createApp( name, Utils.getUserFromSession(session), type, contentTypes );
+    service.createApp(name, Utils.getUserFromSession(session), type, contentTypes);
   }
 
 // обновить приложение
@@ -104,7 +113,7 @@ public class AdRegController
                        @RequestParam( value = "type", required = true ) AppType type,
                        @RequestParam( value = "contentType", required = true ) List<ContentType> contentTypes )
   {
-    service.editApp( id, name, new User(), type, contentTypes );
+    service.editApp(id, name, new User(), type, contentTypes);
   }
 
 // удалить приложение
@@ -112,19 +121,21 @@ public class AdRegController
   public void deleteApp( HttpSession session,
                          @RequestParam( value = "id", required = true ) Integer id )
   {
-    service.deleteApp( id );
+    service.deleteApp(id);
   }
 
-  // TODO : dose not process exceptions correctly
+  @RequestMapping(value="/logout", method = RequestMethod.GET)
+  public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth != null){
+      new SecurityContextLogoutHandler().logout(request, response, auth);
+    }
+    return "redirect:/login?logout";
+  }
 
   @ExceptionHandler( Exception.class )
-  public ModelAndView handleAllException( Exception ex )
+  public ResponseEntity<?> handleAllException( Exception ex )
   {
-
-    ModelAndView model = new ModelAndView( "error" );
-    model.addObject( "errCode", ex );
-    model.addObject( "errMsg", ex.getMessage() );
-    return model;
-
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR );
   }
 }

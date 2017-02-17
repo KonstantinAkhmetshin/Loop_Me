@@ -11,13 +11,13 @@ public interface FacadeService
 {
   String NO_VALUE = "";
 
-  User createPublisher( String name, String email );
+  User createPublisher( String name, String email, String password );
 
   User editPublisher(Integer id, String name, String email );
 
   void deletePublisher( Integer id );
 
-  User createOperator( String name, String email );
+  User createOperator( String name, String email, String password );
 
   User editOperator(Integer id, String name, String email );
 

@@ -2,6 +2,7 @@ package com.loopme.utils;
 
 import com.loopme.domain.User;
 import com.loopme.exception.InvalidEmailException;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpSession;
 import java.util.regex.Matcher;
@@ -30,4 +31,12 @@ public class Utils
   {
     httpSession.setAttribute( USER_KEY_IN_SESSION, user );
   }
+
+
+  public static boolean isAutorizedUser()
+  {
+    return !SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser");
+  }
+
+
 }

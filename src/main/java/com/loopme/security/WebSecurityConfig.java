@@ -28,23 +28,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
   @Override
   protected void configure( final HttpSecurity http ) throws Exception
   {
-    http.formLogin()
-                .loginPage("/login.html")
-                .successForwardUrl("/index.html")
-                .failureUrl("/login-error.html")
-            .and()
-            .logout()
+    http.csrf().disable()
+            .formLogin()
+          .loginPage("/login.html")
+          .successForwardUrl("/index.html")
+          .failureUrl("/login.html?fail=true")
+          .and()
+          .logout()
                 .logoutSuccessUrl("/login.html")
             .and()
                .authorizeRequests()
-                       .antMatchers("/**").permitAll()
-//               .antMatchers("/login.html").permitAll()
-//               .antMatchers("/publisher/**", "/operator/**").hasRole("ADMIN")
-//               .antMatchers("/publisher/**", "/app/**").hasRole("ADOPS")
-//               .antMatchers("/app/**").hasRole("PUBLISHER")
+               .mvcMatchers("/css/**", "/js/**", "/webjars/**", "/index.html", "/login.html").permitAll()
+               .mvcMatchers("/publisher/**", "/operator/**").hasAuthority("ADMIN")
+               .mvcMatchers("/publisher/**", "/app/**").hasAuthority("ADOPS")
+               .mvcMatchers("/app/**").hasAuthority("PUBLISHER")
             .and()
                .exceptionHandling()
-            .accessDeniedPage("/403.html");
+               .accessDeniedPage("/403.html");
 
   }
 

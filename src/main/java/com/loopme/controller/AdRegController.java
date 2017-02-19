@@ -1,5 +1,6 @@
 package com.loopme.controller;
 
+import com.loopme.domain.App;
 import com.loopme.domain.AppType;
 import com.loopme.domain.ContentType;
 import com.loopme.domain.User;
@@ -23,13 +24,19 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class AdRegController
 {
   @Autowired
   FacadeService service;
+
+
+  //  ========================================================  PUBLISHERS =================================================
 
 
   @RequestMapping( value = "/publisher/get", method =  RequestMethod.GET  )
@@ -39,7 +46,7 @@ public class AdRegController
     return service.getPublishers();
   }
 
-// создать паблишера
+
   @RequestMapping( value = "/publisher/create", method = { RequestMethod.POST, RequestMethod.GET } )
   public ResponseEntity<?> createPublisher(@RequestParam( value = "name", defaultValue = "" ) String name,
                                            @RequestParam( value = "email", defaultValue = "" ) String email,
@@ -49,16 +56,15 @@ public class AdRegController
     return new ResponseEntity<>( HttpStatus.OK );
   }
 
-// редактировать паблишера
-  @RequestMapping( value = "/publisher/edit", method = RequestMethod.POST )
-  public void editPublisher( @RequestParam( value = "id", required = true ) Integer id,
+  @RequestMapping( value = "/publisher/edit", method = {RequestMethod.POST, RequestMethod.GET} )
+  public ResponseEntity<?> editPublisher( @RequestParam( value = "id", required = true) Integer id,
                              @RequestParam( value = "name", defaultValue = "" ) String name,
                              @RequestParam( value = "email", defaultValue = "" ) String email )
   {
     service.editPublisher(id, name, email);
+    return new ResponseEntity<>( HttpStatus.OK );
   }
 
-// удалить паблишера
   @RequestMapping( value = "/publisher/delete", method = RequestMethod.GET )
 
   public ResponseEntity<?> deletePublisher(@RequestParam( value = "id", required = true ) Integer id )
@@ -67,71 +73,99 @@ public class AdRegController
     return new ResponseEntity<>( HttpStatus.OK );
   }
 
-// создать Оператора
+  //  ========================================================  OPERATORS =================================================
+
+
+  @RequestMapping( value = "/operator/get", method =  RequestMethod.GET  )
+  @ResponseBody
+  public List<User> getOperators()
+  {
+    return service.getOperators();
+  }
+
   @RequestMapping( value = "/operator/create", method = RequestMethod.POST )
-  public void createOperator( @RequestParam( value = "name", required = true ) String name,
-                              @RequestParam( value = "email", required = true ) String email,
-                              @RequestParam( value = "email", required = true ) String password)
+  public ResponseEntity<?> createOperator( @RequestParam( value = "name", required = true ) String name,
+                                           @RequestParam( value = "email", required = true ) String email,
+                                           @RequestParam( value = "password", required = true ) String password)
   {
     service.createOperator(name, email, password);
+    return new ResponseEntity<>( HttpStatus.OK );
   }
 
-// редактировать Оператора
   @RequestMapping( value = "/operator/edit", method = RequestMethod.POST )
-  public void editOperator( HttpSession session,
-                            @RequestParam( value = "id", required = true ) Integer id,
-                            @RequestParam( value = "name", defaultValue = "" ) String name,
-                            @RequestParam( value = "email", defaultValue = "" ) String email )
+  public ResponseEntity<?> editOperator( @RequestParam( value = "id", required = true) Integer id,
+                                         @RequestParam( value = "name", defaultValue = "" ) String name,
+                                         @RequestParam( value = "email", defaultValue = "" ) String email )
   {
-    service.editOperator(id, name, email);
+    service.editPublisher(id, name, email);
+    return new ResponseEntity<>( HttpStatus.OK );
   }
 
-// удалить Оператора
   @RequestMapping( value = "/operator/delete", method = RequestMethod.GET )
-  public void deleteOperator( HttpSession session,
-                              @RequestParam( value = "id", required = true ) Integer id )
+  public ResponseEntity<?> deleteOperator(@RequestParam( value = "id", required = true ) Integer id )
   {
     service.deleteOperator(id);
+    return new ResponseEntity<>( HttpStatus.OK );
+  }
+
+
+//  ========================================================  APPS =================================================
+
+
+  @RequestMapping( value = "/app/typencontent", method =  RequestMethod.GET  )
+  @ResponseBody
+  public Map<String, Object>  getTypesAndContents()
+  {
+    Map<String, Object> stringObjectMap = new HashMap<>();
+    stringObjectMap.put("appType", AppType.values());
+    stringObjectMap.put("contentType", ContentType.values());
+
+    return stringObjectMap;
+  }
+
+
+  @RequestMapping( value = "/app/get", method =  RequestMethod.GET  )
+  @ResponseBody
+  public List<App> getApps()
+  {
+    return service.getApps();
   }
 
 // создать приложение
   // TODO : check inputs
   @RequestMapping( value = "/app/create", method = { RequestMethod.POST, RequestMethod.GET } )
-  public void createApp( HttpSession session,
-                         @RequestParam( value = "name", required = true ) String name,
-                         @RequestParam( value = "type", required = true ) AppType type,
-                         @RequestParam( value = "contentType", required = true ) List<ContentType> contentTypes )
+  public ResponseEntity<?> createApp( @RequestParam( value = "name", required = true ) String name,
+                                     @RequestParam( value = "type", required = true ) String type,
+                                     @RequestParam( value = "contentType", required = true ) List<String> contentTypes
+  )
   {
-    service.createApp(name, Utils.getUserFromSession(session), type, contentTypes);
+    service.createApp(name, type, contentTypes);
+    return new ResponseEntity<>( HttpStatus.OK );
+
   }
 
 // обновить приложение
   @RequestMapping( value = "/app/edit", method = RequestMethod.POST )
-  public void editApp( HttpSession session,
-                       @RequestParam( value = "id", required = true ) Integer id,
-                       @RequestParam( value = "name", defaultValue = "" ) String name,
-                       @RequestParam( value = "type", required = true ) AppType type,
-                       @RequestParam( value = "contentType", required = true ) List<ContentType> contentTypes )
+  public ResponseEntity<?> editApp( @RequestParam( value = "id", required = true ) Integer id,
+                                   @RequestParam( value = "name", defaultValue = "" ) String name,
+                                   @RequestParam( value = "type", required = true ) String type,
+                                   @RequestParam( value = "contentType", required = true ) List<String> contentTypes )
   {
-    service.editApp(id, name, new User(), type, contentTypes);
+    service.editApp(id, name, type, contentTypes);
+    return new ResponseEntity<>( HttpStatus.OK );
+
   }
 
 // удалить приложение
   @RequestMapping( value = "/app/delete", method = RequestMethod.GET )
-  public void deleteApp( HttpSession session,
-                         @RequestParam( value = "id", required = true ) Integer id )
+  public ResponseEntity<?> deleteApp(@RequestParam( value = "id", required = true ) Integer id )
   {
     service.deleteApp(id);
+    return new ResponseEntity<>( HttpStatus.OK );
+
   }
 
-  @RequestMapping(value="/logout", method = RequestMethod.GET)
-  public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if (auth != null){
-      new SecurityContextLogoutHandler().logout(request, response, auth);
-    }
-    return "redirect:/login?logout";
-  }
+//  ========================================================  Exception Handler =================================================
 
   @ExceptionHandler( Exception.class )
   public ResponseEntity<?> handleAllException( Exception ex )

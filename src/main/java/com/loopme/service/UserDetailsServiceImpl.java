@@ -1,6 +1,6 @@
 package com.loopme.service;
 
-import com.loopme.dao.UserDao;
+import com.loopme.repository.UserRepository;
 import com.loopme.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,12 +17,12 @@ import java.util.Set;
 @Service
 public class UserDetailsServiceImpl  implements UserDetailsService {
   @Autowired
-  private UserDao userDao;
+  private UserRepository userRepository;
 
   @Override
   @Transactional(readOnly = true)
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userDao.getUserByName(username);
+    User user = userRepository.getUserByName(username);
 
     if(user == null)
     {

@@ -1,5 +1,6 @@
 package com.loopme.domain;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -30,7 +31,7 @@ public class App
   @Column( name = "TYPE", nullable = false )
   private AppType           type;
 
-  @Column( name = "CONTENT_TYPEc", nullable = false )
+  @Column( name = "CONTENT_TYPE", nullable = false )
   @ElementCollection( targetClass = ContentType.class )
   @Enumerated( EnumType.STRING )
   private List<ContentType> contentTypes;

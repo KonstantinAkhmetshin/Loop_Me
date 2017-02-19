@@ -23,16 +23,17 @@ public interface FacadeService
 
   void deleteOperator( Integer id );
 
-  App createApp( String name, User user, AppType type, List<ContentType> contentTypes );
+  App createApp( String name, String type, List<String> contentTypes );
 
-  App editApp( Integer id, String name, User user, AppType type, List<ContentType> contentTypes );
+  App editApp( Integer id, String name, String type, List<String> contentTypes );
 
   void deleteApp( Integer id );
 
   List<User> getPublishers();
 
+  List<User> getOperators();
+
   User getUserByName( String name );
 
-  // TODO : test method. remove
-  void getUsers();
+  List<App> getApps();
 }

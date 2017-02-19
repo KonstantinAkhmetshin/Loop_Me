@@ -39,19 +39,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .and()
                .authorizeRequests()
                .mvcMatchers("/css/**", "/js/**", "/webjars/**", "/index.html", "/login.html").permitAll()
-               .mvcMatchers("/publisher/**", "/operator/**").hasAuthority("ADMIN")
-               .mvcMatchers("/publisher/**", "/app/**").hasAuthority("ADOPS")
-               .mvcMatchers("/app/**").hasAuthority("PUBLISHER")
+               .mvcMatchers("/publisher/**").hasAnyAuthority("ADMIN","ADOPS")
+               .mvcMatchers("/operator/**").hasAuthority("ADMIN")
+               .mvcMatchers("/app/**").hasAnyAuthority("ADOPS","PUBLISHER")
             .and()
                .exceptionHandling()
                .accessDeniedPage("/403.html");
-
   }
 
 
   @Autowired
   public void configureGlobal( AuthenticationManagerBuilder auth ) throws Exception
   {
+    // TODO : check can we encode password
     auth.userDetailsService( userDetailsService );//.passwordEncoder( bCryptPasswordEncoder() );
   }
 }

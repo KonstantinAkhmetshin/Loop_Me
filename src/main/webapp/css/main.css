@@ -28,3 +28,18 @@ div.logout {
   transform: translate(-50%, -50%);
   top: 10%;
 }
+
+.create-button-block{
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+
+.scrollit {
+  overflow:auto;
+  height:350px;
+}
+
+.logout {
+  float: right;
+}

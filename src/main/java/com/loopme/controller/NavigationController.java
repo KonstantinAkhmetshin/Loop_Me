@@ -1,6 +1,9 @@
 package com.loopme.controller;
 
 import com.loopme.utils.Utils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,14 +12,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 public class NavigationController
 {
 
-    @RequestMapping("/")
-    public String root() {
-      return "redirect:/index.html";
-    }
+  @RequestMapping( "/" )
+  public String root()
+  {
+    return "redirect:/index.html";
+  }
 
   @RequestMapping("/index.html")
   public String index() {
@@ -38,5 +45,14 @@ public class NavigationController
     return "403";
   }
 
+
+  @RequestMapping(value="/logout", method = RequestMethod.GET)
+  public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth != null){
+      new SecurityContextLogoutHandler().logout(request, response, auth);
+    }
+    return "redirect:/login?logout";
+  }
 
 }

@@ -1,4 +1,4 @@
-package com.loopme.dao;
+package com.loopme.repository;
 
 import com.loopme.domain.User;
 import com.loopme.domain.UserRole;
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public interface  UserDao extends CrudRepository<User,Integer>
+public interface UserRepository extends CrudRepository<User,Integer>
 {
   User getUserById( Integer id );
   User getUserByName( String name );

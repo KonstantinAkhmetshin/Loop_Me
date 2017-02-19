@@ -4,23 +4,30 @@
   <title>LoopMe</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-  <link rel="stylesheet" type="text/css"
-        href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-
   <script type="text/javascript"
           src="webjars/jquery/2.2.4/jquery.min.js"></script>
 
   <script type="text/javascript"
           src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+  <script type="text/javascript"
+          src="webjars/bootstrap-select/1.7.3-1/js/bootstrap-select.min.js"></script>
+
   <script type="text/javascript" src="js/main.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="webjars/bootstrap-select/1.7.3-1/css/bootstrap-select.min.css"/>
+
+  <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}"/>
+
+  <link rel="stylesheet" type="text/css"
+        href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
 
 </head>
 <body>
 <div>
 <nav class="navbar navbar-default">
   <div class="container">
-    <div class="page-header"><h3>Hello, <span sec:authentication="name"></span>! Your role is <span sec:authentication="principal.authorities"></span> <a href='/logout'>Logout</a></h3>
+    <div class="page-header"><h3>Hello, <span sec:authentication="name"></span>! Your role is <span sec:authentication="principal.authorities"></span> <span class="logout"><a href='/logout'>Logout</a></span></h3>
       <span id = "alert_placeholder"></span>
     </div>
     <ul class="nav nav-tabs">
@@ -32,16 +39,15 @@
 </nav>
 </div>
 <div>
-  <table id="tab" class="table">
+  <table id="tab" class="table scrollit">
 
   </table>
 
 </div>
-
-<div class="modal-footer">
-  <button sec:authorize="hasAuthority('ADMIN')" id="createOperator" type="button" class="btn btn-primary btn-lg" data-toggle="modal">Register Operator</button>
-  <button sec:authorize="hasAnyAuthority('ADMIN', 'ADOPS')" id="createPublisher" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Register Publisher</button>
-  <button sec:authorize="hasAnyAuthority('ADOPS','PUBLISHER')"  id="createApplication" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Register Application</button>
+<div class="create-button-block">
+  <button id="createOperator" type="button" class="btn btn-primary btn-lg " data-toggle="modal" >Register Operator</button>
+  <button id="createPublisher" type="button" class="btn btn-primary btn-lg " data-toggle="modal" >Register Publisher</button>
+  <button id="createApplication" type="button" class="btn btn-primary btn-lg " data-toggle="modal" >Register Application</button>
 </div>
 
 

@@ -6,11 +6,16 @@ $(function() {
   var createOperatorButton = $('#createOperator');
   var createApplicationButton = $('#createApplication');
   var modalContainer = $('#modalContainer');
+  var submitModalButton = $("#submitModalButton");
+  var myModalLabel = $("#myModalLabel");
+  var myModal = $('#myModal');
+  var confirmButton =  $('#confirmButton');
+  var property = {};
 
   createPublisherButton.hide();
   createOperatorButton.hide();
   createApplicationButton.hide();
-
+  confirmButton.hide();
 
   function showAlert(message,alerttype) {
     $('#alert_placeholder').append('<div id="alertdiv" class="alert ' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
@@ -22,6 +27,7 @@ $(function() {
 
   function appModuleFormInit(modalLabelText, submitButtonText, url, appObject)
   {
+    confirmButton.hide();
     modalContainer.html("");
 
     var html = '<form id="form" data-type="app" action="' + url + '">';
@@ -65,21 +71,20 @@ $(function() {
 
         selectpicker.selectpicker('refresh');
       }
-      $('#myModal').modal('toggle');
+      myModal.modal('toggle');
 
+    }).error (function(XMLHttpRequest) {
+      myModal.modal('toggle');
+      showAlert(XMLHttpRequest['responseText'], 'alert-danger');
     });
 
-    //if (userObject) {
-    //  $('#userNameInput').val(userObject.name);
-    //  $('#emailInput').val(userObject.email);
-    //  $('#passwordDiv').prop('disabled', true).hide();
-    //}
-
-    $("#submitModalButton").html(submitButtonText);
-    $("#myModalLabel").html(modalLabelText);
+    submitModalButton.show();
+    submitModalButton.html(submitButtonText);
+    myModalLabel.html(modalLabelText);
   }
 
   function userModuleFormInit(modalLabelText, submitButtonText, userType, operation, userObject) {
+    confirmButton.hide();
     modalContainer.html("");
     var html = '<form id="form" data-type="'+userType+'" action="' + "/" +userType  + "/" + operation + '">';
     if (userObject) {
@@ -106,12 +111,14 @@ $(function() {
       $('#passwordDiv').prop('disabled', true).hide();
     }
 
-    $("#submitModalButton").html(submitButtonText);
-    $("#myModalLabel").html(modalLabelText);
-    $('#myModal').modal('toggle');
+    submitModalButton.show();
+    submitModalButton.html(submitButtonText);
+    myModalLabel.html(modalLabelText);
+    myModal.modal('toggle');
   }
 
   function builtAppInformTable() {
+    confirmButton.hide();
     tab.html("");
     tab.append("<thead>"
     + "<th>" + "ID" + "</th>"
@@ -140,11 +147,14 @@ $(function() {
         + "</tr>");
       });
       tab.append("</tbody>");
+    }).error (function(XMLHttpRequest) {
+      showAlert(XMLHttpRequest['responseText'], 'alert-danger');
     });
 
   }
 
   function builtUserInformTable(userType) {
+    confirmButton.hide();
     tab.html("");
     tab.append("<thead>"
         + "<th>" + "ID" + "</th>"
@@ -171,15 +181,33 @@ $(function() {
         + "</tr>");
       });
       tab.append("</tbody>");
+    }).error (function(XMLHttpRequest) {
+      showAlert(XMLHttpRequest['responseText'], 'alert-danger');
     });
   }
-// -------------------------------------------   light funcs -------------------------------
+
+
   function removeFunc(event){
     var targetSelector = $(event.target);
     var userType = targetSelector.attr("data-type");
     var elementId = targetSelector.parent().parent().children("td:first").text();
+    modalContainer.html("");
+    submitModalButton.hide();
+    confirmButton.show();
+    myModalLabel.html("Delete item whit id = " + elementId + "?");
+    confirmButton.html("Delete");
+    property['userType'] = userType;
+    property['elementId'] = elementId;
+
+    myModal.modal('toggle');
+  }
+
+  confirmButton.on('click', function(event){
+
+    var userType = property['userType'];
+    console.log(userType);
     $.ajax({
-      url: "/"+userType+"/delete?id="+elementId
+      url: "/"+userType+"/delete?id="+property['elementId']
     }).done(function() {
       if(userType === 'app')
       {
@@ -188,7 +216,10 @@ $(function() {
       }
       builtUserInformTable(userType);
     });
-  }
+    confirmButton.hide();
+    myModal.modal('toggle');
+
+  });
 
   function editFunc(event) {
     var targetSelector = $(event.target);
@@ -218,7 +249,7 @@ $(function() {
 
   //--------------------------------------------------- Listeners -----------------------------------------
 
-  $('#submitModalButton').on('click', function(){
+  submitModalButton.on('click', function(){
     var form = $('#form');
     var operationType = form.attr('data-type');
     $.ajax({
@@ -226,7 +257,7 @@ $(function() {
       type:'post',
       data:form.serialize(),
       success:function(){
-        $('#myModal').modal('toggle');
+        myModal.modal('toggle');
         showAlert("<strong>Operation success</strong>", 'alert-success');
         if(operationType === 'app'){
           builtAppInformTable();
@@ -235,7 +266,7 @@ $(function() {
         builtUserInformTable(operationType);
       },
       error:function(XMLHttpRequest) {
-        $('#myModal').modal('toggle');
+        myModal.modal('toggle');
         showAlert(XMLHttpRequest['responseText'], 'alert-danger');
       }
     });

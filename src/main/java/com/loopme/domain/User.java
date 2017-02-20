@@ -21,8 +21,7 @@ public final class User implements Serializable
   @Column( name = "ID" )
   private Integer  id;
 
-  // TODO :make this field unique
-  @Column( name = "NAME", nullable = false )
+  @Column( name = "NAME", nullable = false, unique=true )
   private String   name;
 
   @Column( name = "EMAIL", nullable = false )

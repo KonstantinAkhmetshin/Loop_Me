@@ -8,12 +8,6 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 @SpringBootApplication
 public class ApplicationRunner extends SpringBootServletInitializer
 {
-
-//  public ApplicationRunner() {
-//    super();
-//    setRegisterErrorPageFilter(false); // <- this one
-//  }
-
   @Override
   protected SpringApplicationBuilder configure( SpringApplicationBuilder application )
   {
@@ -24,6 +18,4 @@ public class ApplicationRunner extends SpringBootServletInitializer
   {
     SpringApplication.run(ApplicationRunner.class, args);
   }
-
-
 }

@@ -28,7 +28,7 @@
 <nav class="navbar navbar-default">
   <div class="container">
     <div class="page-header"><h3>Hello, <span sec:authentication="name"></span>! Your role is <span sec:authentication="principal.authorities"></span> <span class="logout"><a href='/logout'>Logout</a></span></h3>
-      <span id = "alert_placeholder"></span>
+      <span class="alert" id = "alert_placeholder"></span>
     </div>
     <ul class="nav nav-tabs">
       <li sec:authorize="hasAnyAuthority('ADMIN', 'ADOPS')" role="presentation" ><a id="publishers">Publishers</a></li>
@@ -38,8 +38,8 @@
   </div>
 </nav>
 </div>
-<div>
-  <table id="tab" class="table scrollit">
+<div class="scrollit">
+  <table id="tab" class="table">
 
   </table>
 
@@ -65,6 +65,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button id="submitModalButton" type="button" class="btn btn-primary"></button>
+        <button id="confirmButton" type="button" class="btn btn-primary"></button>
       </div>
     </div>
   </div>

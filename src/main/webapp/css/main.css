@@ -36,10 +36,15 @@ div.logout {
 }
 
 .scrollit {
-  overflow:auto;
+  overflow-y:auto;
   height:350px;
 }
 
 .logout {
   float: right;
+}
+
+.alert{
+  position: fixed;
+  right:50px;
 }

@@ -1,24 +1,22 @@
 package com.loopme.controller;
 
-import com.loopme.utils.Utils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.loopme.utils.Utils;
 
 @Controller
 public class NavigationController
 {
-
   @RequestMapping( "/" )
   public String root()
   {
@@ -38,7 +36,6 @@ public class NavigationController
     model.addAttribute("loginError", isFail);
     return "login";
   }
-
 
   @RequestMapping("/403.html")
   public String accessDenied() {

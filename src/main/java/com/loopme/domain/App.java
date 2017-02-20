@@ -1,6 +1,7 @@
 package com.loopme.domain;
 
-import javax.persistence.CollectionTable;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -11,10 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.List;
 
 @Entity
 @Table( name = "APPS" )
@@ -36,8 +35,8 @@ public class App
   @Enumerated( EnumType.STRING )
   private List<ContentType> contentTypes;
 
-  @OneToOne (fetch= FetchType.LAZY)
-  @JoinColumn(name="USERS_ID")
+  @OneToOne( fetch = FetchType.LAZY )
+  @JoinColumn( name = "USERS_ID" )
   private User              user;
 
   public Integer getId()

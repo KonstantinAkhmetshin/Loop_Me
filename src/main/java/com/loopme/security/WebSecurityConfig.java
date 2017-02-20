@@ -14,45 +14,35 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
-
-
   @Autowired
   UserDetailsService userDetailsService;
-
-  @Bean
-  public BCryptPasswordEncoder bCryptPasswordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-
 
   @Override
   protected void configure( final HttpSecurity http ) throws Exception
   {
     http.csrf().disable()
-            .formLogin()
-          .loginPage("/login.html")
-          .successForwardUrl("/index.html")
-          .failureUrl("/login.html?fail=true")
-          .and()
-          .logout()
-                .logoutSuccessUrl("/login.html")
-            .and()
-               .authorizeRequests()
-               .mvcMatchers("/css/**", "/js/**", "/webjars/**", "/index.html", "/login.html").permitAll()
-               .mvcMatchers("/publisher/**").hasAnyAuthority("ADMIN","ADOPS")
-               .mvcMatchers("/operator/**").hasAuthority("ADMIN")
-               .mvcMatchers("/app/**").hasAnyAuthority("ADOPS","PUBLISHER")
-            .and()
-               .exceptionHandling()
-               .accessDeniedPage("/403.html");
+               .formLogin()
+                 .loginPage("/login.html")
+                   .successForwardUrl("/index.html")
+                   .failureUrl("/login.html?fail=true")
+               .and()
+                 .logout()
+                   .logoutSuccessUrl("/login.html")
+               .and()
+                 .authorizeRequests()
+                   .mvcMatchers("/css/**", "/js/**", "/webjars/**", "/index.html", "/login.html").permitAll()
+                   .mvcMatchers("/publisher/**").hasAnyAuthority("ADMIN","ADOPS")
+                   .mvcMatchers("/operator/**").hasAuthority("ADMIN")
+                   .mvcMatchers("/app/**").hasAnyAuthority("ADOPS","PUBLISHER")
+               .and()
+                 .exceptionHandling()
+                   .accessDeniedPage("/403.html");
   }
-
-
+  
   @Autowired
   public void configureGlobal( AuthenticationManagerBuilder auth ) throws Exception
   {
-    // TODO : check can we encode password
-    auth.userDetailsService( userDetailsService );//.passwordEncoder( bCryptPasswordEncoder() );
+    auth.userDetailsService( userDetailsService );
   }
 }
 

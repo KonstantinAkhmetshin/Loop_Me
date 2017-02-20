@@ -15,23 +15,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class UserDetailsServiceImpl  implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService
+{
   @Autowired
   private UserRepository userRepository;
 
   @Override
-  @Transactional(readOnly = true)
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.getUserByName(username);
+  @Transactional( readOnly = true )
+  public UserDetails loadUserByUsername( String username ) throws UsernameNotFoundException
+  {
+    User user = userRepository.getUserByName( username );
 
-    if(user == null)
+    if( user == null )
     {
-      throw new UsernameNotFoundException("No user with name '" + username + "' found.");
+      throw new UsernameNotFoundException( "No user with name '" + username + "' found." );
     }
     Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
-    grantedAuthorities.add(new SimpleGrantedAuthority(user.getUserRole().name()));
+    grantedAuthorities.add( new SimpleGrantedAuthority( user.getUserRole().name() ) );
 
-    return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), grantedAuthorities);
+    return new org.springframework.security.core.userdetails.User( user.getName(), user.getPassword(), grantedAuthorities );
   }
 }

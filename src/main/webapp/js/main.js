@@ -205,7 +205,6 @@ $(function() {
   confirmButton.on('click', function(event){
 
     var userType = property['userType'];
-    console.log(userType);
     $.ajax({
       url: "/"+userType+"/delete?id="+property['elementId']
     }).done(function() {
@@ -230,7 +229,7 @@ $(function() {
       var app = {
         id: par.children("td[name=idField]").text(),
         name: par.children("td[name=nameField]").text(),
-        type : par.children("td[name=nameField]").text(),
+        type : par.children("td[name=typeField]").text(),
         contentTypes : par.children("td[name=contentTypesField]").text()
       };
 
@@ -258,7 +257,7 @@ $(function() {
       data:form.serialize(),
       success:function(){
         myModal.modal('toggle');
-        showAlert("<strong>Operation success</strong>", 'alert-success');
+        showAlert("<strong>Operation successfully completed!</strong>", 'alert-success');
         if(operationType === 'app'){
           builtAppInformTable();
           return;

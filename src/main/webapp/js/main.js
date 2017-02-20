@@ -214,6 +214,8 @@ $(function() {
         return;
       }
       builtUserInformTable(userType);
+    }).error (function(XMLHttpRequest) {
+      showAlert(XMLHttpRequest['responseText'], 'alert-danger');
     });
     confirmButton.hide();
     myModal.modal('toggle');

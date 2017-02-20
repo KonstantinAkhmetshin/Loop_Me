@@ -3,6 +3,7 @@ package com.loopme.service;
 import java.util.List;
 
 import com.loopme.exception.ApplicationNotFoundException;
+import com.loopme.exception.CannotDeleteUserException;
 import com.loopme.exception.DuplicateConstraintException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -122,7 +123,7 @@ public class FacadeServiceImpl implements FacadeService
   public List<App> getApps()
   {
     String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-    User user = userRepository.getUserByName( userName );
+    User user = userRepository.getUserByName(userName);
     if( user.getUserRole() == UserRole.ADOPS )
     {
       return appRepository.findAll();
@@ -133,6 +134,11 @@ public class FacadeServiceImpl implements FacadeService
   private void deleteUser( Integer id )
   {
     User user = userRepository.getUserById(id);
+    List<App> apps = appRepository.getAppByUserName(user.getName());
+    if(apps.size() > 0)
+    {
+      throw new CannotDeleteUserException("User '"+user.getName()+"' own application(s). Please, remove all user's application before delte user." );
+    }
     userRepository.delete( user );
   }
 
